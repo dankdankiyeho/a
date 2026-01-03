@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Bir Soru 💗</title>
+
+<style>
+body {
+  margin: 0;
+  background: #ffd6e8;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Tahoma, Verdana, sans-serif;
+  overflow: hidden;
+}
+
+.window {
+  position: absolute;
+  width: 400px;
+  background: #ffeaf3;
+  border: 3px solid #e59cbc;
+  box-shadow: 6px 6px #c97aa0;
+  transition: top 0.25s ease, left 0.25s ease;
+}
+
+/* AVATAR */
+.avatar {
+  position: absolute;
+  top: -190px;              /* ← biraz daha yukarı alındı */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  pointer-events: none;
+}
+
+.avatar img {
+  position: absolute;
+  width: 180px;
+  transition: opacity 0.6s ease;
+}
+
+.avatar img.hidden {
+  opacity: 0;
+}
+
+.title-bar {
+  background: #f2a6c9;
+  padding: 6px 8px;
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  font-size: 14px;
+}
+
+.buttons span {
+  margin-left: 6px;
+  background: #ffd6e8;
+  color: #c04f86;
+  padding: 0 6px;
+  border: 1px solid #c04f86;
+}
+
+.content {
+  padding: 26px;
+  text-align: center;
+  color: #7d1f4a;
+}
+
+.content p {
+  font-size: 22px;
+  line-height: 1.4;
+  margin-bottom: 22px;
+}
+
+.emphasis {
+  color: #a01555;
+}
+
+button {
+  font-family: inherit;
+  font-size: 16px;
+  background: #ffd6e8;
+  border: 2px solid #c04f86;
+  padding: 8px 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #f2a6c9;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-top: 10px;
+}
+
+.creepy {
+  font-family: Impact, "Arial Black", sans-serif;
+  letter-spacing: 2px;
+  color: #6a0f3c;
+}
+</style>
+</head>
+
+<body>
+
+<div class="window" id="window">
+
+  <!-- AVATAR -->
+  <div class="avatar">
+    <img src="minik1.png" id="avatar1">
+    <img src="minik2.png" id="avatar2" class="hidden">
+  </div>
+
+  <div class="title-bar">
+    <span>Text_Untitled</span>
+    <div class="buttons"><span>_</span><span>□</span><span>X</span></div>
+  </div>
+
+  <div class="content" id="content">
+    <p>Kalbimde bir soru var…</p>
+    <button onclick="nextText()">Tamam</button>
+  </div>
+</div>
+
+<script>
+let step = 0;
+const content = document.getElementById("content");
+const win = document.getElementById("window");
+
+const avatar1 = document.getElementById("avatar1");
+const avatar2 = document.getElementById("avatar2");
+
+function centerWindow() {
+  win.style.left = (window.innerWidth / 2 - 200) + "px";
+  win.style.top = (window.innerHeight / 2 - 130) + "px";
+}
+
+centerWindow();
+
+function nextText() {
+  step++;
+
+  if (step === 1) {
+    content.innerHTML = `
+      <p>
+        Bunu sana sormanın<br>
+        <span class="emphasis">en güvenli yolunu</span> buldum.
+      </p>
+      <button onclick="nextText()">Tamam</button>
+    `;
+  }
+
+  if (step === 2) {
+
+    avatar1.classList.add("hidden");
+    avatar2.classList.remove("hidden");
+
+    content.innerHTML = `
+      <p><b>Benimle çıkar mısın?</b></p>
+      <div class="actions">
+        <button onclick="yes()">Evet</button>
+        <button id="no">Hayır</button>
+      </div>
+    `;
+
+    const noBtn = document.getElementById("no");
+    noBtn.addEventListener("mousemove", moveWindow);
+  }
+}
+
+function moveWindow() {
+  const currentX = win.offsetLeft;
+  const currentY = win.offsetTop;
+
+  const offsetX = (Math.random() * 240) - 120;
+  const offsetY = (Math.random() * 240) - 120;
+
+  let newX = currentX + offsetX;
+  let newY = currentY + offsetY;
+
+  newX = Math.max(20, Math.min(window.innerWidth - 420, newX));
+  newY = Math.max(20, Math.min(window.innerHeight - 260, newY));
+
+  win.style.left = newX + "px";
+  win.style.top = newY + "px";
+}
+
+function yes() {
+  centerWindow();
+  content.innerHTML = `
+    <p>…</p>
+    <button onclick="final()">?</button>
+  `;
+}
+
+function final() {
+  content.innerHTML = `
+    <p class="creepy">SENİ SEVİYORUM</p>
+  `;
+}
+</script>
+
+</body>
+</html>
